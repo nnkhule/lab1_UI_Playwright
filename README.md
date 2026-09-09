@@ -1,3 +1,6 @@
+B232270018
+Б. Энхбаяр
+
 
 # Lab 1 - UI Test Playwright
 
