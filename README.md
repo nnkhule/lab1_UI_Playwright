@@ -1,43 +1,46 @@
-\# Lab 1 - UI Test Playwright
 
-\## Ашигласан технологи
+# Lab 1 - UI Test Playwright
 
-\- Playwright
-\- TypeScript
-\- Node.js
+Энэхүү лабораторийн ажлаар Playwright фрэймворк ашиглан [SauceDemo](https://www.saucedemo.com/) веб сайтад автоматжуулсан E2E (End-to-End) тестүүдийг бичиж, гүйцэтгэсэн.
 
-\## Website
+# Ашигласан технологи
 
-https://www.saucedemo.com/
+* **Language:** TypeScript 
+* **Test Runner:** Playwright Test
+* **Target Application:** Swag Labs (SauceDemo)
 
-\## Tests
+## Төслийг ажиллуулах заавар
 
-\- Login test
-\- Logout test
-\- Test isolation
-\- Playwright Codegen
-\- Trace Viewer
+1. **Хамаарлуудыг суулгах:**
+   ```bash
+   npm install
 
-\## Run tests
 
+1  **Тестүүдийг ажиллуулах:**
+# Бүх тестийг headless горимд ажиллуулах
 npx playwright test
 
-\## Show the test result 
+# UI горимоор ажиллуулах
+npx playwright test --ui
 
-npx playwright show-result
+2 **Тестийн тайлан (HTML Report) харах:**
 
-\## Run tests with trace
+npx playwright show-report
 
-npx playwright test --trace on
 
-\## Open trace
+**Playwright болон Selenium харьцуулалт**
 
-npx playwright show-trace test-results/.../trace.zip
+1. Архитектур ба Гүйцэтгэл
+Selenium нь WebDriver JSON Wire Protocol (буюу HTTP REST API)-аар дамжуулан хөтөчтэй харилцдаг тул команд бүрт сүлжээний хоцролт (overhead) үүсдэг. Харин Playwright нь хөтөчийн зангилаатай WebSocket протоколуудаар (CDP - Chrome DevTools Protocol гэх мэт) шууд харилцдаг тул тест ажиллах хурд маш өндөр.
 
-Playwright vs Selenium
+2. Auto-waiting механизм
+Selenium дээр элемент ачаалагдахыг хүлээхэд Implicit Wait эсвэл Explicit Wait гар аргаар зааж өгөх шаардлагатай байдаг бөгөөд энэ нь тест Flaky (тогтворгүй) болох гол шалтгаан болдог. Playwright нь элемент дээр дарах, текст бичихээс өмнө тухайн элемент харагдаж буй эсэх, идэвхтэй байгаа эсэхийг цаанаа автоматаар хүлээдэг (Auto-waiting).
 
-Playwright нь modern browser automation-д зориулсан tool бөгөөд Chromium, Firefox, WebKit зэрэг browser-уудыг дэмждэг. Locator болон auto-waiting механизм нь UI тестийг илүү тогтвортой бичихэд тусалдаг.
+3. XPath-аас зайлсхийх шалтгаан
+Selenium-д DOM-ийн бүтцээс хамаарсан урт XPath (//div[2]/form/div[1]/input) ашиглах нь түгээмэл байдаг бөгөөд энэ нь дизайн эсвэл HTML бөгөөд жаахан л өөрчлөгдөхөд тест шууд унадаг. Playwright нь хэрэглэгчийн харах өнцөгт суурилсан Built-in Locators (getByRole, getByText, getByTestId г.м)-ыг санал болгодог. Энэ нь кодын уншигдах чанарыг дээшлүүлж, DOM-ийн бүтцийн өөрчлөлтөд илүү тогтвортой болгодог.
 
-Selenium нь browser automation-ийн өргөн хэрэглэгддэг framework бөгөөд олон хэл болон browser-ийг дэмждэг. Харин Playwright нь modern web application testing болон end-to-end testing-д илүү нэгдсэн боломжуудтай гэж үзэж болно.
+4. Codegen болон Debugging хэрэгсэл
+Selenium IDE нь хязгаарлагдмал функцтэй бөгөөд орчин үеийн веб аппликейшн дээр код үүсгэхдээ хангалтгүй байдаг. Playwright-ийн Codegen нь хэрэглэгчийн үйлдэл бүрийг цэвэрхэн TypeScript/JavaScript код болгон хөрвүүлдэг. Мөн унасан тестийг шинжлэхэд Trace Viewer нь алхам бүрийн screenshot, network request, console log-ийг хугацааны шугамаар (timeline) харуулдгаараа Selenium-аас хавьгүй илүү давуу талтай.
 
-Миний хувьд Playwright нь суулгалт, locator, auto-waiting, trace viewer зэрэг боломжуудаас шалтгаалан ашиглахад илүү хялбар санагдсан.
+5. Санаатай унагаах тест ба Ажиглалт
+Даалгаврын дагуу селекторыг санаатай буруу зааж тестийг унагааж үзсэн. Энэ үед Playwright нь тохируулсан тайм-аут (30 сек) хүртэл элементийг автоматаар хүлээгээд, унасан цэг дээрх visual screenshot, DOM snapshot болон уналтын шалтгааныг тодорхой мэдээлсэн HTML report ба Trace файл үүсгэж байв.
